@@ -17,29 +17,23 @@ function BubbleChart(svg, data, {
   linkTarget = "_blank", // the target attribute for links, if any
   width = 640, // outer width, in pixels
   height = width, // outer height, in pixels
-  padding = 4, // padding between circles
-  margin = 70, // default margins
+  padding = 10, // padding between circles
+  margin = 80, // default margins
   marginTop = margin, // top margin, in pixels
   marginRight = margin, // right margin, in pixels
   marginBottom = margin, // bottom margin, in pixels
   marginLeft = margin, // left margin, in pixels
-  groups, // array of group names (the domain of the color scale)
-  colors = d3.schemeTableau10, // an array of colors (for groups)
-  fill = "#FF5732", // a static fill color, if no group channel is specified
-  fillOpacity = 1, // the fill opacity of the bubbles
-  stroke, // a static stroke around the bubbles
-  strokeWidth, // the stroke width around the bubbles, if any
-  strokeOpacity, // the stroke opacity around the bubbles, if any
+  fill = "#80daeb", // a static fill color, if no group channel is specified
+  fillOpacity = 0.5, // the fill opacity of the bubbles
+  stroke = "#afeeee", // a static stroke around the bubbles
+  strokeWidth=6, // the stroke width around the bubbles, if any
+  strokeOpacity=0.3, // the stroke opacity around the bubbles, if any
 } = {}) {
   // Compute the values.
   const D = d3.map(data, d => d);
   const V = d3.map(data, value);
   const G = group == null ? null : d3.map(data, group);
   const I = d3.range(V.length).filter(i => V[i] > 0);
-
-  // Unique the groups.
-  if (G && groups === undefined) groups = I.map(i => G[i]);
-  groups = G && new d3.InternSet(groups);
 
   // Construct scales.
   const color = G && d3.scaleOrdinal(groups, colors);
@@ -113,7 +107,7 @@ async function init() {
   const data = await readJson('future_cities_data.json');
   let simplifiedData = data.map((d) => {
     return {
-      annualMeanTemp: d['Annual_Mean_Temperature'],
+      annualPrec: d['Annual_Precipitation'],
       city: d['current_city'],
     };
   });
@@ -145,17 +139,18 @@ async function init() {
 
   chart = BubbleChart(svg, simplifiedData, {
     label: d => d.city,
-    value: d => d.annualMeanTemp,
-    title: d => d.city,
+    value: d => d.annualPrec,
+    title: d => d.annualPrec.toFixed(1),
     width: 2000
   })
 
   svg
     .selectAll('circle')
-    .on('mouseover', function () {
-      const city = this.dataset.city;
+    .on('click', function () {
+      const annualPrec = this.dataset.annualPrec;
       local.set(this, d3.select(this).attr('fill'));
-      d3.select(this).attr('fill', '#8033FF');
+      d3.select(this).attr('fill', '#DCDCDC');
+      const coords = d3.pointer;
     })
     
     .on('mousemove', function (event) {
