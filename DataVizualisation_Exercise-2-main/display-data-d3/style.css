@@ -1,0 +1,39 @@
+* {
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  text-align: left;
+  
+}
+
+
+svg rect:hover {
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 38pt;
+  margin-left: 30px;
+  margin-top: 20px;
+  font-style: bold;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+h2 {
+  font-size: 15pt;
+  margin-left: 30px;
+  margin-bottom: 20px;
+  font-style: bold;
+}
+
+text {
+  font-size: 9pt;
+  padding: 5px;
+  text-align: center;
+}
+
+p {
+  margin-left: 30px;
+  margin-top: 20px;
+}
